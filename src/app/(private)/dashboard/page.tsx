@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import Dashboard from "@/containers/Dashboard";
+import { Dashboard } from "@/domains/dashboard";
 
 export const metadata: Metadata = {
   title: "Dashboard | Thrive Admin",

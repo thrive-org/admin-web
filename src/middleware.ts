@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getToken, JWT } from "next-auth/jwt";
-import { isValidRole } from "./utils/role";
+import { isAllowedRole } from "@/lib/rbac";
 import { PUBLIC_ROUTES, URLS } from "./constants/page";
 
 type TokenValidationResult =
@@ -28,7 +28,7 @@ const isTokenValid = async (
     return { success: false, error: "NOT_VALID_TOKEN", callbackUrl: "/login" };
   }
 
-  if (!isValidRole(token.roleName)) {
+  if (!isAllowedRole(token.roleName)) {
     return { success: false, error: "INVALID_ROLE", callbackUrl: "/forbidden" };
   }
 

@@ -1,9 +1,9 @@
-import { getUser } from "@/utils/auth";
+import { getCurrentUser } from "@/domains/auth/server/session";
 import { redirect } from "next/navigation";
 import { URLS } from "@/constants/page";
 
 const Page = async () => {
-  const user = await getUser();
+  const user = await getCurrentUser();
 
   if (!user) {
     redirect(URLS.LOGIN);

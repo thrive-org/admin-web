@@ -1,4 +1,4 @@
-import { checkUser } from "@/features/user/user.handler";
+import { checkUser } from "@/domains/user/server/handlers/checkUser";
 import { api } from "@/lib/apiBuilder";
 import toSafeAsync from "@/utils/toSafeAsync";
 
