@@ -1,7 +1,7 @@
-import { AuthDtoType } from "@/domains/auth/dto/auth.dto";
+import { AuthDtoType } from "@/domains/auth/server/dto/auth.dto";
 import authService from "@/domains/auth/server/auth.service";
 import { isAllowedRole } from "@/lib/rbac";
-import { AuthDto } from "@/domains/auth/dto/auth.dto";
+import { AuthDto } from "@/domains/auth/server/dto/auth.dto";
 
 type LoginData = {
   email: string;
