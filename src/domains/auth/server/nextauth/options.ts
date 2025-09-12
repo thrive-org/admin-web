@@ -1,4 +1,3 @@
-import "server-only";
 import type { NextAuthOptions } from "next-auth";
 import { providers } from "./providers";
 import { callbacks } from "./callbacks";

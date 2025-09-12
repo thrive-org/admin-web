@@ -26,16 +26,18 @@ export const Dropdown: React.FC<DropdownProps> = ({
 }) => {
   return (
     <div className={`space-y-2 ${className}`}>
+      {label && (
       <label htmlFor={id} className="text-sm font-normal text-[#000000]">
         {label}
         {required && <span className="text-red-500">*</span>}
       </label>
-      <div className="relative mt-2">
+ )}
+      <div className="relative">
         <select
           id={id}
           value={value}
           onChange={e => onChange(e.target.value)}
-          className={`h-[55px] w-full appearance-none rounded-[7.56px] border-none bg-[#F2F5F6] pr-8 pl-10 text-[14px] leading-[100%] font-normal tracking-[0.5%] ${
+          className={`w-full py-3 appearance-none rounded-xl border-none bg-[#F2F5F6] px-4 text-[15px] font-normal tracking-[0.5%] ${
             value === '' ? 'text-[#A4A4A4]' : 'text-[#A4A4A4]'
           } focus-visible:ring-2 focus-visible:ring-[#00A8FF]/30 focus-visible:ring-offset-0 focus-visible:outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50`}
         >
@@ -48,9 +50,6 @@ export const Dropdown: React.FC<DropdownProps> = ({
             </option>
           ))}
         </select>
-        <div className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 transform">
-          {icon}
-        </div>
         <svg
           className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 transform"
           width="15"

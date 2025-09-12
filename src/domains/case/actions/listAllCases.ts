@@ -3,7 +3,6 @@ import handlers from "../server/handlers";
 import { Roles } from "@/domains/auth/constants/roles";
 
 const listAllCases = async () => {
-  "use server";
 
   const user = await getCurrentUser();
 

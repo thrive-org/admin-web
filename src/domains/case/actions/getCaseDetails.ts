@@ -4,7 +4,6 @@ import { redirect } from "next/navigation";
 import { cache } from "react";
 
 const getCaseDetails = cache(async (number: string) => {
-  "use server";
 
   const user = await getCurrentUser();
   if (!user) {
