@@ -13,7 +13,7 @@ export const medicalExaminerSidebarRoutes = [
   {
     icon: Building,
     label: "Organization",
-    href: "/dashboard/organization",
+    href: "/organization",
     index: 1,
   },
   {

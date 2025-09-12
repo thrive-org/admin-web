@@ -1,22 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getToken, JWT } from "next-auth/jwt";
-import { isAllowedRole } from "@/lib/rbac";
 import { PUBLIC_ROUTES, URLS } from "./constants/page";
+import { isAllowedRole } from "./lib/rbac";
 
 type TokenValidationResult =
   | {
-      success: true;
-      data: JWT;
-    }
+    success: true;
+    data: JWT;
+  }
   | {
-      success: false;
-      error:
-        | "NOT_VALID_TOKEN"
-        | "INVALID_ROLE"
-        | "USER_NOT_FOUND"
-        | "INVALID_ACCOUNT_ROLE";
-      callbackUrl: string;
-    };
+    success: false;
+    error:
+    | "NOT_VALID_TOKEN"
+    | "INVALID_ROLE"
+    | "USER_NOT_FOUND"
+    | "INVALID_ACCOUNT_ROLE";
+    callbackUrl: string;
+  };
 
 
 const isTokenValid = async (
@@ -40,7 +40,7 @@ const isPublicRoute = (pathname: string) => {
 };
 
 export async function middleware(req: NextRequest) {
-  console.log("middleware", req.nextUrl.pathname);  
+  console.log("middleware", req.nextUrl.pathname);
   const result = await isTokenValid(req);
 
   console.log("result", result);
@@ -50,13 +50,12 @@ export async function middleware(req: NextRequest) {
     const adminDashboardUrl = new URL(URLS.DASHBOARD, req.url);
     return NextResponse.redirect(adminDashboardUrl);
   }
-
-  if (!isPublic && !result.success) {
-    const url = new URL(result.callbackUrl || "/login", req.url);
+  if (!isPublic && !result.success && "callbackUrl" in result) {
+    const callbackUrl = result.callbackUrl || "/login";
+    const url = new URL(callbackUrl, req.url);
     url.searchParams.set("callbackUrl", req.nextUrl.href);
     return NextResponse.redirect(url);
   }
-
   return NextResponse.next();
 }
 

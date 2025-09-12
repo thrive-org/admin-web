@@ -24,7 +24,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 
         {/* Main Content */}
         <main className="flex-1 overflow-y-auto bg-gray-50 px-0 md:px-8">
-          <div className="max-w-full p-6">
+          <div className="max-w-full p-3">
             <Suspense
               fallback={
                 <div className="flex h-full w-full flex-1 items-center justify-center">

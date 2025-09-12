@@ -43,7 +43,7 @@ const ProfileDropdown = ({ isMobile, session }: ProfileDropdownProps) => {
   }, [session?.user?.image]);
 
   const getProfileImageUrl = () => {
-    return session?.user?.image || '/images/default-avatar.png';
+    return session?.user?.image || '/avatar.png';
   };
 
   const renderDropdown = () => {
@@ -106,55 +106,47 @@ const ProfileDropdown = ({ isMobile, session }: ProfileDropdownProps) => {
 
   if (isMobile) {
     return (
-      <div className="relative" ref={avatarMobileRef} style={{ width: 50, height: 50 }}>
+      <div className="relative" ref={avatarMobileRef} style={{ width: 40, height: 40 }}>
         {imageLoading && (
-          <div className="bg-opacity-50 absolute inset-0 flex items-center justify-center rounded-full bg-gray-500">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-white border-t-transparent"></div>
+          <div className="absolute inset-0 flex items-center justify-center rounded-full bg-gray-500 bg-opacity-50">
+            <div className="h-6 w-6 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
           </div>
         )}
         <Image
-          height={50}
-          width={50}
+          height={40}
+          width={40}
           onClick={() => setDropdownOpen(prev => !prev)}
-          className="h-[50px] w-[50px] cursor-pointer rounded-full border border-[#DBDBFF] bg-white object-cover"
+          className="h-[40px] w-[40px] cursor-pointer rounded-full border border-[#DBDBFF] bg-white object-cover"
           src={getProfileImageUrl()}
           alt="User dropdown"
           onLoad={() => setTimeout(() => setImageLoading(false), 500)}
           onError={() => setTimeout(() => setImageLoading(false), 500)}
           style={imageLoading ? { visibility: 'hidden' } : {}}
         />
-        {/* Dropdown for mobile */}
-        {dropdownOpen &&
-          typeof window !== 'undefined' &&
-          window.innerWidth < 768 &&
-          renderDropdown()}
+        {dropdownOpen && typeof window !== 'undefined' && window.innerWidth < 768 && renderDropdown()}
       </div>
     );
   }
 
   return (
-    <div className="relative" ref={avatarDesktopRef} style={{ width: 60, height: 60 }}>
+    <div className="relative" ref={avatarDesktopRef} style={{ width: 48, height: 48 }}>
       {imageLoading && (
-        <div className="bg-opacity-50 absolute inset-0 flex items-center justify-center rounded-full bg-gray-500">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-white border-t-transparent"></div>
+        <div className="absolute inset-0 flex items-center justify-center rounded-full bg-gray-500 bg-opacity-50">
+          <div className="h-6 w-6 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
         </div>
       )}
       <Image
         onClick={() => setDropdownOpen(prev => !prev)}
-        className="h-[60px] min-h-[60px] w-[60px] cursor-pointer rounded-full border border-[#DBDBFF] bg-white object-cover"
+        className="h-[48px] w-[48px] cursor-pointer rounded-full border border-[#DBDBFF] bg-white object-cover"
         src={getProfileImageUrl()}
         alt="User dropdown"
-        height={60}
-        width={60}
+        height={48}
+        width={48}
         onLoad={() => setTimeout(() => setImageLoading(false), 500)}
         onError={() => setTimeout(() => setImageLoading(false), 500)}
-        style={imageLoading ? { visibility: "hidden" } : {}}
+        style={imageLoading ? { visibility: 'hidden' } : {}}
       />
-      {/* Dropdown for desktop */}
-      {dropdownOpen &&
-        typeof window !== 'undefined' &&
-        window.innerWidth >= 768 &&
-        renderDropdown()}
+      {dropdownOpen && typeof window !== 'undefined' && window.innerWidth >= 768 && renderDropdown()}
     </div>
   );
 };

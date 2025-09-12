@@ -20,6 +20,8 @@ const PageOptions = [
     label: "New IME Referral Request",
     search: false,
   },
+  { name: "organization", label: "Organization", search: false },
+
 ];
 
 const Header = () => {
@@ -28,8 +30,10 @@ const Header = () => {
 
   const currentPath = usePathname();
 
+  const pathSegment = currentPath.split("/")[1];
+
   const currentPage =
-    PageOptions.find((page) => currentPath.includes(page.name)) ||
+    PageOptions.find((page) => page.name === pathSegment) ||
     PageOptions[0];
 
   const showGreeting = (session: Session | null) => {
@@ -45,7 +49,6 @@ const Header = () => {
     if (currentPage.name === "dashboard") {
       return showGreeting(session);
     }
-    return currentPage.label;
   };
 
   return (
