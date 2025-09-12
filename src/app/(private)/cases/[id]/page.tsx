@@ -24,7 +24,7 @@ const Page: React.FC<PageProps> = async ({ params }) => {
   const { id } = await params;
   const caseDetails = await caseActions.getCaseDetails(id);
   const statusOptions = await caseActions.getCaseStatuses();
-  console.log(statusOptions);
+
   return (
     <DashboardShell
       title={
@@ -186,7 +186,12 @@ const Page: React.FC<PageProps> = async ({ params }) => {
           </div>
         </div>
 
-        <SaveCaseDetails caseId={id} status={caseDetails.status.name} assignTo={caseDetails.assignTo?.name} statusOptions={statusOptions} />
+        <SaveCaseDetails
+          caseId={id}
+          status={caseDetails.status.name}
+          assignTo={caseDetails.assignTo?.name}
+          statusOptions={statusOptions}
+        />
       </div>
     </DashboardShell>
   );

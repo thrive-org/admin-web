@@ -50,7 +50,7 @@ const SaveCaseDetails = ({ caseId, status, assignTo, statusOptions }: SaveCaseDe
         <p className="font-poppins text-[18px] leading-none tracking-0 font-semibold">
           Case Status:
         </p>
-        <div className="w-48">
+        <div className="w-52">
           <Dropdown
             id="case-status"
             label=""
@@ -74,13 +74,13 @@ const SaveCaseDetails = ({ caseId, status, assignTo, statusOptions }: SaveCaseDe
 
       {/* save button on the right */}
       <button
-        disabled={isSubmitting}
-        className="font-poppins text-[18px] bg-[#000093] leading-none tracking-0 font-normal text-white px-6 py-2.5 rounded-full cursor-pointer hover:bg-[#000093]/80 ml-auto" 
-        onClick={handleSubmit(onSubmit)}
-      >
-        {isSubmitting ? "Saving..." : "Save"}
-      </button>
-    </div>
+          disabled={isSubmitting}
+          className="font-poppins text-[18px] bg-[#000093] leading-none tracking-0 font-normal text-white px-6 py-2.5 rounded-full cursor-pointer hover:bg-[#000093]/80 ml-auto disabled:cursor-not-allowed disabled:opacity-50" 
+          onClick={handleSubmit(onSubmit)}
+        >
+          {isSubmitting ? "Saving..." : "Save"}
+        </button>
+      </div>
   );
 };
 

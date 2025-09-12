@@ -59,10 +59,11 @@ class CaseDto {
       id: c.id,
       referral: {
         id: c.referral.id,
-        number: c.referral.caseNumber,
+        number: c.caseNumber,
       },
       claimant: {
         id: c.referral.claimant.id,
+        name: c.referral.claimant.firstName + ' ' + c.referral.claimant.lastName,
         email: c.referral.claimant.emailAddress,
         phone: c.referral.claimant.phoneNumber,
         gender: c.referral.claimant.gender,
@@ -114,7 +115,7 @@ class CaseDto {
       id: c.id,
       referral: {
         id: c.referral.id,
-        number: c.referral.caseNumber,
+        number: c.caseNumber,
       },
       claimant: {
         id: c.referral.claimant.id,

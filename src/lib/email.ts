@@ -16,15 +16,13 @@ type SendArgs = {
 let transporterPromise: Promise<Transporter> | null = null;
 
 function createTransporter(): Transporter {
-  // Nodemailer’s XOAUTH2 will fetch/refresh access tokens using the refresh_token.
   return nodemailer.createTransport({
     service: "gmail",
     auth: {
-      type: "OAuth2",
-      user: process.env.GMAIL_USER!,                 // e.g. you@gmail.com
+      user: process.env.GMAIL_USER!,                 // e..g. you@gmail.com
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-      refreshToken: process.env.GMAIL_REFRESH_TOKEN!, // from OAuth Playground
+      refreshToken: process.env.GMAIL_REFRESH_TOKEN!,
     },
   });
 }
