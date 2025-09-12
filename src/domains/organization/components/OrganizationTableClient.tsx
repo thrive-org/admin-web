@@ -1,12 +1,13 @@
 "use client";
 import { useState } from "react";
-import { OrganizationListTable, OrganizationRow } from "./OrganizationListTable";
+import { OrganizationRow } from "./columns";
+import OrganizationTable from "./OrganizationTable";
 
 interface OrganizationTableClientProps {
   data: OrganizationRow[];
 }
 
-export default function OrganizationTableClient({ data }: OrganizationTableClientProps) {
+const OrganizationTableClient = ({ data }: OrganizationTableClientProps) => {
   const [search, setSearch] = useState("");
 
   const filteredData = data.filter(org =>
@@ -20,17 +21,19 @@ export default function OrganizationTableClient({ data }: OrganizationTableClien
 
   return (
     <div className="bg-white rounded-2xl shadow p-6">
-      <div className="flex justify-end mb-4">
+      <div className="flex justify-end mb-8">
         <input
           type="text"
           placeholder="Search organizations..."
           value={search}
           onChange={e => setSearch(e.target.value)}
-          className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-200"
-          style={{ fontFamily: 'Poppins, system-ui', fontSize: '14px', width: '240px' }}
+          className="px-6 py-4 rounded-lg border border-gray-300 w-2/4 focus:outline-none focus:ring-2 focus:ring-blue-200"
+          style={{ fontFamily: 'Poppins, system-ui', fontSize: '18px' }}
         />
       </div>
-      <OrganizationListTable data={filteredData} />
+      <OrganizationTable data={filteredData} />
     </div>
   );
-}
+};
+
+export default OrganizationTableClient;

@@ -4,11 +4,26 @@ import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { Building, Home, LifeBuoy, LogOut, UserPlus } from "lucide-react";
+import {
+  Building,
+  CaseUpper,
+  Home,
+  LifeBuoy,
+  LogOut,
+  LucideIcon,
+} from "lucide-react";
 import { signOut } from "next-auth/react";
 import { useSidebar } from "@/providers/Sidebar";
+import { cn } from "@/lib/utils";
 
-export const medicalExaminerSidebarRoutes = [
+type Route = {
+  icon: LucideIcon;
+  label: string;
+  href: string;
+  index: number;
+};
+
+export const routes: Route[] = [
   { icon: Home, label: "Dashboard", href: "/dashboard", index: 0 },
   {
     icon: Building,
@@ -17,13 +32,78 @@ export const medicalExaminerSidebarRoutes = [
     index: 1,
   },
   {
-    icon: UserPlus,
-    label: "Referrals",
-    href: "/dashboard/referrals",
+    icon: CaseUpper,
+    label: "Cases",
+    href: "/cases",
     index: 2,
   },
   { icon: LifeBuoy, label: "Support", href: "/dashboard/support", index: 3 },
 ];
+
+type SideBarItemProps = {
+  item: Route;
+  Icon: LucideIcon;
+  setSelectedSidebarIndex: (index: number) => void;
+  isSelected: boolean;
+};
+
+const SideBarItem = ({
+  item,
+  Icon,
+  setSelectedSidebarIndex,
+  isSelected,
+}: SideBarItemProps) => {
+  const pathname = usePathname();
+  const { closeSidebar: onMobileClose } = useSidebar();
+
+  const handleLinkClick = (item: Route) => {
+    setSelectedSidebarIndex(item.index);
+    if (onMobileClose) {
+      onMobileClose();
+    }
+  };
+
+  const isActive = (href: string) =>
+    pathname === href || pathname.startsWith(href);
+  const itemIsActive = isActive(item.href);
+
+  const active = itemIsActive || isSelected;
+
+  return (
+    <Link
+      key={item.index}
+      href={item.href}
+      onClick={() => handleLinkClick(item)}
+      title={item.label}
+      className={cn(
+        `mb-4 flex items-center gap-3 rounded-xl pl-4 py-2 text-sm font-medium transition-all`,
+        {
+          "bg-gradient-to-r from-[#00A8FF] to-[#01F4C8] text-white shadow-sm hover:from-[#00A8FF]/80 hover:to-[#01F4C8]/80 cursor-pointer":
+            active,
+          "bg-[#EEF1F3] text-[#7B8B91] hover:bg-[#E7EBEE] hover:text-[#000093] cursor-pointer":
+            !active,
+        }
+      )}
+    >
+      <span
+        className={cn(`flex h-7 w-7 items-center justify-center rounded-full`, {
+          "bg-white/30 text-white hover:text-white": active,
+          "bg-[#E0E6E9] text-[#A3ADB3] hover:text-[#000093]": !active,
+        })}
+      >
+        <Icon size={18} />
+      </span>
+      <span
+        className={cn({
+          "text-white": active,
+          "text-inherit": !active,
+        })}
+      >
+        {item.label}
+      </span>
+    </Link>
+  );
+};
 
 const Sidebar = () => {
   const pathname = usePathname();
@@ -71,7 +151,7 @@ const Sidebar = () => {
       return;
     }
 
-    const matchedItem = medicalExaminerSidebarRoutes.find((item) =>
+    const matchedItem = routes.find((item) =>
       checkIsPartOfSidebar(pathname, item.href)
     );
 
@@ -82,16 +162,6 @@ const Sidebar = () => {
 
   const handleLogout = () => {
     signOut({ callbackUrl: "/login" });
-  };
-
-  const isActive = (href: string) =>
-    pathname === href || pathname.startsWith(href);
-
-  const handleLinkClick = (item: (typeof medicalExaminerSidebarRoutes)[0]) => {
-    setSelectedSidebarIndex(item.index);
-    if (onMobileClose) {
-      onMobileClose();
-    }
   };
 
   return (
@@ -106,7 +176,7 @@ const Sidebar = () => {
               }
               border-r border-gray-200`}
       >
-        <div className="relative flex h-full min-h-0 w-full flex-col">
+        <div className="relative flex h-full min-h-0 w-full flex-col pt-2">
           {/* close btn unchanged */}
 
           {/* Logo */}
@@ -116,7 +186,7 @@ const Sidebar = () => {
               alt="Thrive"
               width={160}
               height={80}
-              className="h-10 w-auto"
+              className="h-16 w-auto"
               priority
             />
           </div>
@@ -124,60 +194,24 @@ const Sidebar = () => {
           {/* Nav */}
           <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
             <nav className="flex-1 space-y-4 overflow-y-auto px-6">
-              {medicalExaminerSidebarRoutes.map((item) => {
-                const itemIsActive = isActive(item.href);
-                const isSelected = selectedBtn === item.index;
-                const Icon = item.icon;
-
-                const active = itemIsActive || isSelected;
-
+              {routes.map((item) => {
                 return (
-                  <Link
+                  <SideBarItem
                     key={item.index}
-                    href={item.href}
-                    onClick={() => handleLinkClick(item)}
-                    title={item.label}
-                    className={`mb-2 flex items-center gap-3 rounded-full px-3 py-2.5 text-sm font-medium transition-all
-                ${
-                  active
-                    ? "bg-gradient-to-r from-[#01F4C8] to-[#00A8FF] text-white shadow-sm"
-                    : "bg-[#EEF1F3] text-[#7B8B91] hover:bg-[#E7EBEE] hover:text-[#000093]"
-                }`}
-                  >
-                    <span
-                      className={`flex h-7 w-7 items-center justify-center rounded-full
-                   ${
-                     active
-                       ? "bg-white/30 text-white"
-                       : "bg-[#E0E6E9] text-[#A3ADB3]"
-                   }`}
-                    >
-                      <Icon size={18} />
-                    </span>
-                    <span
-                      className={`${active ? "text-white" : "text-inherit"}`}
-                    >
-                      {item.label}
-                    </span>
-                    {/* optional chevron area can go here */}
-                  </Link>
+                    item={item}
+                    Icon={item.icon}
+                    setSelectedSidebarIndex={setSelectedSidebarIndex}
+                    isSelected={selectedBtn === item.index}
+                  />
                 );
               })}
             </nav>
-
-            {/* Subitems example */}
-            {/* <div className="mt-[-8px] px-12 space-y-2">
-          <button className="flex items-center gap-2 text-sm text-[#6B7280] hover:text-[#000093]">
-            <Settings size={16} /> Invoices
-          </button>
-          ...
-        </div> */}
 
             {/* Logout */}
             <div className="flex-shrink-0 p-6">
               <button
                 onClick={handleLogout}
-                className="flex w-full items-center justify-center gap-2 rounded-full bg-[#000093] px-6 py-3 text-white font-semibold shadow-lg hover:bg-[#000093]/90"
+                className="flex w-full items-center gap-2 rounded-xl bg-gradient-to-r from-[#00A8FF] to-[#01F4C8] pl-4 py-3 text-white font-semibold shadow-lg hover:from-[#00A8FF]/80 hover:to-[#01F4C8]/80 cursor-pointer"
               >
                 <LogOut size={20} className="text-white" />
                 <span className="text-sm">Log Out</span>

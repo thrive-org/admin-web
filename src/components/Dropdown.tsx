@@ -39,7 +39,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
             value === '' ? 'text-[#A4A4A4]' : 'text-[#A4A4A4]'
           } focus-visible:ring-2 focus-visible:ring-[#00A8FF]/30 focus-visible:ring-offset-0 focus-visible:outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50`}
         >
-          <option value="" disabled className="text-[#9EA9AA]">
+          <option key="placeholder" value="" disabled className="text-[#9EA9AA]">
             {placeholder}
           </option>
           {options.map(option => (

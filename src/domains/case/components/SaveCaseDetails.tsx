@@ -1,0 +1,89 @@
+"use client";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Dropdown } from "@/components/Dropdown";
+import caseActions from "../actions";
+import { CaseStatus } from "@prisma/client";
+
+type SaveCaseDetailsProps = {
+  caseId: string;
+  status: string;
+  assignTo?: string;
+  statusOptions: CaseStatus[];
+};
+
+const SaveCaseDetails = ({ caseId, status, assignTo, statusOptions }: SaveCaseDetailsProps) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [currentStatus, setCurrentStatus] = useState(status);
+  const [previousStatus, setPreviousStatus] = useState(status);
+  const { handleSubmit, formState: { isSubmitting } } = useForm({
+    defaultValues: {
+      status: status,
+      assignTo: assignTo,
+    },
+  });
+  
+  const onSubmit = async (data: any) => {
+    console.log(previousStatus, currentStatus);
+    setIsLoading(true);
+    try {
+      // Check if status changed from "Pending" to "Ready to Appointment"
+      if (previousStatus === "Pending" && currentStatus === "Ready to Appointment") {
+        console.log("Ready to Appointment");
+        await caseActions.readyForAppointment(caseId);
+      }
+      // Add other status update logic here if needed
+    } catch (error) {
+      console.error("Error updating case status:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleStatusChange = (newStatus: string) => {
+    setPreviousStatus(currentStatus);
+    setCurrentStatus(newStatus);
+  };
+
+const transformedStatusOptions = statusOptions.map(option => ({
+    value: option.name,
+    label: option.name
+  }));
+
+  return (
+    <div className="flex items-center gap-2 shadow-sm w-full bg-white h-[80px] rounded-full px-10 w-full">
+      <div className="flex items-center gap-2">
+        <p className="font-poppins text-[18px] leading-none tracking-0 font-semibold">
+          Case Status:
+        </p>
+        <div className="w-48">
+          <Dropdown
+            id="case-status"
+            label=""
+            value={currentStatus}
+            onChange={handleStatusChange}
+            options={transformedStatusOptions}
+            placeholder="Select status"
+            className="mb-0"
+          />
+        </div>
+      </div>
+
+      <div className="flex items-center gap-2 ml-10">
+        <p className="font-poppins text-[18px] leading-none tracking-0 font-semibold">
+          Assigned to:
+        </p>
+        <p className="font-poppins text-[18px] leading-none tracking-0 font-normal">
+          {assignTo || "Not assigned"}
+        </p>
+      </div>
+
+      {/* save button on the right */}
+      <button className="font-poppins text-[18px] bg-[#000093] leading-none tracking-0 font-normal text-white px-6 py-2.5 rounded-full cursor-pointer hover:bg-[#000093]/80 ml-auto" onClick={handleSubmit(onSubmit)}>
+        {isLoading ? "Saving..." : "Save"}
+      </button>
+    </div>
+  );
+};
+
+export default SaveCaseDetails;

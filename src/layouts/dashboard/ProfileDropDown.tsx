@@ -4,6 +4,7 @@ import { signOut } from 'next-auth/react';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { LogOut, Home, LifeBuoy, UserPlus } from 'lucide-react';
+import Link from 'next/link';
 
 type ProfileDropdownProps = {
   isMobile: boolean;
@@ -43,7 +44,7 @@ const ProfileDropdown = ({ isMobile, session }: ProfileDropdownProps) => {
   }, [session?.user?.image]);
 
   const getProfileImageUrl = () => {
-    return session?.user?.image || '/avatar.png';
+    return session?.user?.image || '/images/avatar.png';
   };
 
   const renderDropdown = () => {
@@ -61,26 +62,26 @@ const ProfileDropdown = ({ isMobile, session }: ProfileDropdownProps) => {
         </div>
         <ul className="py-2 text-sm text-gray-700">
           <li>
-            <a
+            <Link
               href="/dashboard"
               className="flex items-center space-x-2 px-4 py-2 transition-colors hover:bg-gray-100"
             >
               <Home size={16} />
               <span>Dashboard</span>
-            </a>
+            </Link>
           </li>
           <li>
-            <a
-              href="/dashboard/ime-referrals"
+            <Link
+              href="/cases"
               className="flex items-center space-x-2 px-4 py-2 transition-colors hover:bg-gray-100"
             >
               <UserPlus size={16} />
               <span>Referrals</span>
-            </a>
+            </Link>
           </li>
           <li>
             <a
-              href="/dashboard/support"
+              href="/support"
               className="flex items-center space-x-2 px-4 py-2 transition-colors hover:bg-gray-100"
             >
               <LifeBuoy size={16} />
@@ -137,7 +138,7 @@ const ProfileDropdown = ({ isMobile, session }: ProfileDropdownProps) => {
       )}
       <Image
         onClick={() => setDropdownOpen(prev => !prev)}
-        className="h-[48px] w-[48px] cursor-pointer rounded-full border border-[#DBDBFF] bg-white object-cover"
+        className="h-[50px] min-h-[50px] w-[50px] cursor-pointer rounded-full border border-[#DBDBFF] bg-white object-cover"
         src={getProfileImageUrl()}
         alt="User dropdown"
         height={48}

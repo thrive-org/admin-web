@@ -7,6 +7,8 @@ export const metadata: Metadata = {
 };
 
 // Let the page itself be async
-export default function Page() {
+const Page = () => {
   return <Organization />;
-}
+};
+
+export default Page;
